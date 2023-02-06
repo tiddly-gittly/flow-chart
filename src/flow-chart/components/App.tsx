@@ -13,11 +13,17 @@ export interface IAppProps {
   field?: string;
   height?: number;
   width?: number;
+  /**
+   * By default, the arrow is childTiddler-[tagWith]->TagTiddler
+   * But you can invert the arrow by passing "yes" to this
+   */
+  invertArrow: boolean;
 }
 
 export function App(props: IAppProps): JSX.Element {
+  const { invertArrow } = props;
   // TODO: only support tags, until we have time to add config and use kin-filter later
   // const relationshipField = props.field || 'tags';
-  const { nodes, edges } = getChildTiddlersRecursively(props.rootTiddler);
+  const { nodes, edges } = getChildTiddlersRecursively(props.rootTiddler, { invertArrow });
   return <Canvas maxWidth={props.width} maxHeight={props.height} nodes={nodes} edges={edges} />;
 }

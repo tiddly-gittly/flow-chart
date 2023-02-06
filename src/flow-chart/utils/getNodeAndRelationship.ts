@@ -9,6 +9,9 @@ export interface ITiddlerGraphResult {
     to: string;
   }[];
 }
+export interface ITiddlerGraphOptions {
+  invertArrow: boolean;
+}
 
 /**
  * Get nodes list and edges list, started from title (as tag for its child), arrow point to this title.
@@ -19,7 +22,11 @@ export interface ITiddlerGraphResult {
  * @param options
  * @returns
  */
-export function getChildTiddlersRecursively(title: string, previousResults?: ITiddlerGraphResult): ITiddlerGraphResult {
+export function getChildTiddlersRecursively(
+  title: string,
+  options?: Partial<ITiddlerGraphOptions>,
+  previousResults?: ITiddlerGraphResult,
+): ITiddlerGraphResult {
   const results = previousResults ?? {
     edges: [],
     nodes: [{ id: title, text: title }],
@@ -56,15 +63,23 @@ export function getChildTiddlersRecursively(title: string, previousResults?: ITi
   // add the remaining intermediate results and traverse the hierarchy further
   results.nodes.push(...intermediate.map((childTitle) => ({ id: childTitle, text: childTitle })));
   results.edges.push(
-    ...intermediate.map((childTitle) => ({
-      id: `${title}-${childTitle}`,
-      from: childTitle,
-      to: title,
-    })),
+    ...intermediate.map((childTitle) =>
+      options?.invertArrow
+        ? {
+            id: `${title}-${childTitle}`,
+            to: childTitle,
+            from: title,
+          }
+        : {
+            id: `${title}-${childTitle}`,
+            from: childTitle,
+            to: title,
+          },
+    ),
   );
 
   intermediate.forEach(function (title) {
-    getChildTiddlersRecursively(title, results);
+    getChildTiddlersRecursively(title, options, results);
   });
   return results;
 }
