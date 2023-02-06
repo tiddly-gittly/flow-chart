@@ -1,0 +1,25 @@
+.flow-chart-container button:not(.tc-btn-invisible) {
+  color: unset;
+}
+
+.flow-chart-container button.flow-chart-add-node-button {
+  color: white;
+  position: absolute;
+  top: 0;
+  background-color: #666;
+  left: 50%;
+  transform: translate(-50%);
+  width: 27px;
+  height: 27px;
+  font-size: 10px;
+
+  opacity: 0;
+}
+.flow-chart-add-node-container {
+  height: 100%;
+  width: 100%;
+  transition: opacity 0.2s;
+}
+.flow-chart-add-node-container:hover button.flow-chart-add-node-button {
+  opacity: 1;
+}

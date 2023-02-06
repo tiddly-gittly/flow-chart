@@ -15,7 +15,7 @@ class FlowChartWidget extends Widget<IAppProps> {
     return {
       rootTiddler: this.rootTiddler,
       // a default height
-      height: this.getAttribute('height') ? Number(this.getAttribute('height')) : 300,
+      height: this.getAttribute('height') ? Number(this.getAttribute('height')) : 500,
       // default to full width 100%, but it requires number, so we have to get number from parent element
       width: this.getAttribute('width') ? Number(this.getAttribute('width')) : (this.parentDomNode as HTMLElement)?.offsetWidth,
       invertArrow: this.getAttribute('invert') === 'yes',

@@ -3,4 +3,4 @@ type: text/vnd.tiddlywiki
 
 {{Simpsons family tree}}
 
-<$flowchart tiddler="Mona" />
+<$flowchart tiddler="Mona" height="1000" />
