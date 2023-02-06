@@ -1,15 +1,17 @@
 [
     {
-        "title": "$:/plugins/your-name/plugin-name",
-        "author": "Your Name",
-        "description": "Description of this plugin",
+        "title": "$:/plugins/linonetwo/flow-chart",
+        "author": "LinOnetwo",
+        "description": "Building workflow editors, flow charts and diagrams, with reaviz/reaflow ",
         "core-version": ">=5.1.22",
         "plugin-type": "plugin",
         "version": "0.0.1",
+        "Modern.TiddlyDev#ExternalModules": "react react-dom",
         "list": "readme",
         "dependents": "",
         "type": "application/json",
-        "Modern.TiddlyDev#SHA256-Hashed": "2ecaa985a7d39d6afe451ca194a6865a7afa4fd2924912390bed6818972a5c16",
+        "Modern.TiddlyDev#SHA256-Hashed": "20809888fa2fe3f77f4e4f5fc9c4a11be1f7b91c9c76ebc5890fa80a7df07b1c",
+        "readme": "!! ReadMe\n\nBuilding workflow editors, flow charts and diagrams, with reaviz/reaflow \n",
         "requires-reload": "yes"
     }
 ]
