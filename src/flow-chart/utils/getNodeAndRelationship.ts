@@ -22,7 +22,7 @@ export interface ITiddlerGraphResult {
 export function getChildTiddlersRecursively(title: string, previousResults?: ITiddlerGraphResult): ITiddlerGraphResult {
   const results = previousResults ?? {
     edges: [],
-    nodes: [],
+    nodes: [{ id: title, text: title }],
   };
   // get tagging[] list at this level
   const intermediate = $tw.wiki.getTiddlersWithTag(title);
