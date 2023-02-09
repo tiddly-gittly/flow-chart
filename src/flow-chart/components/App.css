@@ -2,24 +2,30 @@
   color: unset;
 }
 
-.flow-chart-container button.flow-chart-add-node-button {
+.flow-chart-container button.flow-chart-button {
   color: white;
-  position: absolute;
-  top: 0;
   background-color: #666;
-  left: 50%;
-  transform: translate(-50%);
   width: 27px;
   height: 27px;
   font-size: 10px;
+  user-select: none;
+  cursor: pointer;
 
   opacity: 0;
 }
-.flow-chart-add-node-container {
-  height: 100%;
+.flow-chart-container button.flow-chart-add-node-button {
+}
+.flow-chart-container button.flow-chart-edit-node-button {
+}
+.flow-chart-buttons-container {
+  position: absolute;
+  top: 0;
   width: 100%;
   transition: opacity 0.2s;
 }
-.flow-chart-add-node-container:hover button.flow-chart-add-node-button {
+.flow-chart-buttons-container:hover button.flow-chart-button {
   opacity: 1;
+}
+.flow-chart-focused-node {
+  border: 2px dotted #999;
 }

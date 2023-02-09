@@ -17,10 +17,21 @@ export function NodeEditMode(props: NodeChildProps & IOwnProps) {
     editingIDSetter(props.node.id);
   }, [props.node.id]);
   return (
-    <foreignObject height={props.height + topExtraAreaHeight} width={props.width} x={0} y={-topExtraAreaHeight / 2}>
+    <foreignObject
+      height={props.height + topExtraAreaHeight}
+      width={props.width}
+      x={0}
+      y={-topExtraAreaHeight / 2}
+      onClick={() => props.focusedStateSetter({ id: props.node.id, state: 'focus' })}>
       <input
         type="text"
         value={editingID}
+        autoFocus
+        onClick={(event) => {
+          event.preventDefault();
+          event.stopPropagation();
+        }}
+        onFocus={(event) => event.target.select()}
         onChange={(event) => {
           editingIDSetter(event.target.value);
         }}

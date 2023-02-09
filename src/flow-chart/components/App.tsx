@@ -30,6 +30,9 @@ export interface IAppProps extends Partial<ITiddlerGraphResult> {
   invertArrow: boolean;
 }
 
+/** need to add two button with width 27px */
+const minNodeWidth = 27 * 2 + 16;
+
 export function App(props: IAppProps): JSX.Element {
   const { nodes, edges } = props;
   if (!nodes || !edges) {
@@ -47,17 +50,21 @@ export function App(props: IAppProps): JSX.Element {
       nodes={nodes}
       edges={edges}
       fit={true}
-      node={
-        <Node>
-          {(nodeProps) => {
-            if (focusedState.id === nodeProps.node.id && focusedState.state === 'edit') {
-              return <NodeEditMode {...nodeProps} focusedStateSetter={focusedStateSetter} />;
-            }
-            return <NodeViewMode {...nodeProps} focusedStateSetter={focusedStateSetter} />;
-          }}
-        </Node>
-      }
-      onLayoutChange={(layout) => console.log('Layout', layout)}
+      node={(props) => {
+        const width = Math.max(props.width, minNodeWidth);
+        if (focusedState.id === props.id && focusedState.state === 'edit') {
+          return (
+            <Node {...props} style={{ width }}>
+              {(nodeProps) => <NodeEditMode {...nodeProps} width={width} focusedStateSetter={focusedStateSetter} />}
+            </Node>
+          );
+        }
+        return (
+          <Node {...props} style={{ width }}>
+            {(nodeProps) => <NodeViewMode {...nodeProps} width={width} focusedState={focusedState} focusedStateSetter={focusedStateSetter} />}
+          </Node>
+        );
+      }}
     />
   );
 }
