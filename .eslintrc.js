@@ -5,5 +5,6 @@ module.exports = {
     '@typescript-eslint/prefer-for-of': 'off',
     curly: 'off',
     '@typescript-eslint/typedef': 'off',
+    '@typescript-eslint/lines-between-class-members': 'off',
   },
 };
