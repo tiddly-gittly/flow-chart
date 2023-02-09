@@ -40,8 +40,6 @@ class FlowChartWidget extends Widget<IAppProps> {
   public refresh(changedTiddlers: IChangedTiddlers): boolean {
     if (this.rootTiddler === undefined) return false;
     const changedAttributes = this.computeAttributes();
-    // DEBUG: console
-    console.log(`calculateGraph0`);
     this.calculateGraph();
     const someNodesChanged = this.nodes?.some((node) => changedTiddlers[node.id]?.modified === true);
     if ($tw.utils.count(changedAttributes) > 0 || someNodesChanged) {
@@ -56,8 +54,6 @@ class FlowChartWidget extends Widget<IAppProps> {
     this.rootTiddler = this.getAttribute('tiddler');
     this.invertArrow = this.getAttribute('invert') === 'yes';
     if (!this.nodes && !this.edges) {
-      // DEBUG: console
-      console.log(`calculateGraph1`);
       this.calculateGraph();
     }
     // Make the child widgets
