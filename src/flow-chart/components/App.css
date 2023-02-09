@@ -2,6 +2,10 @@
   color: unset;
 }
 
+.flow-chart-node-view-mode {
+  user-select: none;
+}
+
 .flow-chart-container button.flow-chart-button {
   color: white;
   background-color: #666;
@@ -12,10 +16,6 @@
   cursor: pointer;
 
   opacity: 0;
-}
-.flow-chart-container button.flow-chart-add-node-button {
-}
-.flow-chart-container button.flow-chart-edit-node-button {
 }
 .flow-chart-buttons-container {
   position: absolute;
@@ -28,4 +28,16 @@
 }
 .flow-chart-focused-node {
   border: 2px dotted #999;
+  user-select: none;
+}
+.flow-chart-edit-node > div {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+.flow-chart-container input.flow-chart-edit-input {
+  width: calc(100%);
+}
+.flow-chart-container button.flow-chart-edit-done-button {
+  opacity: 1;
 }
