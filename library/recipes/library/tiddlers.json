@@ -10,7 +10,7 @@
         "list": "readme",
         "dependents": "",
         "type": "application/json",
-        "Modern.TiddlyDev#SHA256-Hashed": "c74bbbe5f195db0f884571955bd1ae0fa0bb18cf06ae03901ca2071f074cf665",
+        "Modern.TiddlyDev#SHA256-Hashed": "32f433a709737c70b228980c221a70b80c1372849fd51671811e92c3ef01edc3",
         "readme": "!! ReadMe\n\nBuilding workflow editors, flow charts and diagrams, with reaviz/reaflow \n",
         "requires-reload": "yes"
     }
