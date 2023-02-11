@@ -14,6 +14,7 @@ export interface IAppProps extends Partial<ITiddlerGraphResult>, IDefaultWidgetP
    * the whole wiki is a graph of nodes, you can select multiple node in the graph as rootTiddler, to view a sub graph of the wiki.
    */
   rootTiddler: string;
+  direction?: 'RIGHT';
   /**
    * The title of a template tiddler, that will be used to create a new tiddler
    */
@@ -51,6 +52,7 @@ export function App(props: IAppProps): JSX.Element {
         maxHeight={props.height}
         nodes={nodes}
         edges={edges}
+        direction={props.direction}
         fit={true}
         node={(props) => {
           const width = Math.max(props.width, minNodeWidth);
