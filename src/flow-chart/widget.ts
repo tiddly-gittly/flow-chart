@@ -43,7 +43,7 @@ class FlowChartWidget extends Widget<IAppProps> {
     if (this.rootTiddler === undefined) return false;
     const changedAttributes = this.computeAttributes();
     this.calculateGraph();
-    const someNodesChanged = this.nodes?.some((node) => changedTiddlers[node.id]?.modified === true);
+    const someNodesChanged = this.nodes?.some((node) => changedTiddlers[node.id]?.modified === true || changedTiddlers[node.id]?.deleted === true);
     if ($tw.utils.count(changedAttributes) > 0 || someNodesChanged) {
       this.refreshSelf();
       return true;

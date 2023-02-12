@@ -19,8 +19,11 @@ export function NodeEditMode(props: NodeChildProps & IOwnProps) {
   const onDone = useCallback(() => {
     const currentTiddler = $tw.wiki.getTiddler(props.node.id);
     if (currentTiddler !== undefined) {
-      $tw.wiki.addTiddler({ ...currentTiddler.fields, title: editingID });
-      $tw.wiki.deleteTiddler(props.node.id);
+      // rename and relink tiddler
+      $tw.rootWidget.dispatchEvent({
+        type: 'tm-rename-tiddler',
+        paramObject: { from: props.node.id, to: editingID, renameInTags: 'yes', renameInLists: 'yes' },
+      });
     } else {
       throw new Error(`"${props.node.id}" Not exist and can't be renamed to "${editingID}"`);
     }
