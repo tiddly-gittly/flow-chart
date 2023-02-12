@@ -1,3 +1,5 @@
+import type { PortData } from 'reaflow';
+
 export interface ITiddlerGraphResult {
   nodes: {
     id: string;
@@ -11,6 +13,16 @@ export interface ITiddlerGraphResult {
 }
 export interface ITiddlerGraphOptions {
   invertArrow: boolean;
+}
+
+const PORT_SUFFIX = '-port';
+function getPort(tiddlerTitle: string): PortData {
+  return {
+    id: `${tiddlerTitle}${PORT_SUFFIX}`,
+    width: 10,
+    height: 10,
+    side: 'SOUTH',
+  };
 }
 
 /**
@@ -29,7 +41,7 @@ export function getChildTiddlersRecursively(
 ): ITiddlerGraphResult {
   const results = previousResults ?? {
     edges: [],
-    nodes: [{ id: title, text: title }],
+    nodes: [{ id: title, text: title, ports: [getPort(title)] }],
   };
   // get tagging[] list at this level
   const intermediate = $tw.wiki.getTiddlersWithTag(title);
@@ -61,7 +73,7 @@ export function getChildTiddlersRecursively(
   }
   // now we have intermediate array without duplication
   // add the remaining intermediate results and traverse the hierarchy further
-  results.nodes.push(...intermediate.map((childTitle) => ({ id: childTitle, text: childTitle })));
+  results.nodes.push(...intermediate.map((childTitle) => ({ id: childTitle, text: childTitle, ports: [getPort(childTitle)] })));
   results.edges.push(
     ...intermediate.map((childTitle) =>
       options?.invertArrow

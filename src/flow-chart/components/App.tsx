@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Canvas, Node } from 'reaflow';
+import { Canvas, Node, NodeData, NodeDragType, createEdgeFromNodes, hasLink } from 'reaflow';
 import { IDefaultWidgetProps, ParentWidgetContext } from 'tw-react';
 
 import './App.css';
@@ -54,17 +54,43 @@ export function App(props: IAppProps): JSX.Element {
         edges={edges}
         direction={props.direction}
         fit={true}
+        onNodeLinkCheck={(_event, from: NodeData, to: NodeData) => {
+          if (from.id === to.id) {
+            return false;
+          }
+
+          if (hasLink(edges, from, to)) {
+            return false;
+          }
+
+          return true;
+        }}
+        onNodeLink={(event, from, to) => {
+          const tiddlerToChange = $tw.wiki.getTiddler(from.id);
+          if (!tiddlerToChange) {
+            return;
+          }
+
+          if (event.dragType === 'port') {
+            $tw.wiki.addTiddler({ ...tiddlerToChange.fields, tags: [...tiddlerToChange.fields.tags, to.id] });
+          }
+        }}
         node={(props) => {
           const width = Math.max(props.width, minNodeWidth);
+          const sharedNodeOptions = {
+            style: { width },
+            dragType: 'port' as NodeDragType,
+            dragCursor: 'grab',
+          };
           if (focusedState.id === props.id && focusedState.state === 'edit') {
             return (
-              <Node {...props} style={{ width }}>
+              <Node {...props} {...sharedNodeOptions}>
                 {(nodeProps) => <NodeEditMode {...nodeProps} width={width} focusedStateSetter={focusedStateSetter} />}
               </Node>
             );
           }
           return (
-            <Node {...props} style={{ width }}>
+            <Node {...props} {...sharedNodeOptions}>
               {(nodeProps) => <NodeViewMode {...nodeProps} width={width} focusedState={focusedState} focusedStateSetter={focusedStateSetter} />}
             </Node>
           );

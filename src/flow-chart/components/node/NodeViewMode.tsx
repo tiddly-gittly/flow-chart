@@ -30,7 +30,7 @@ export function NodeViewMode(props: NodeChildProps & IOwnProps) {
         event.stopPropagation();
         navigateToTiddlerInDefaultLayout(props.node.id, context?.parentWidget);
       }}
-      className={focused ? 'flow-chart-focused-node' : 'flow-chart-node-view-mode'}>
+      className={`flow-chart-mouse-event-node ${focused ? 'flow-chart-focused-node' : 'flow-chart-node-view-mode'}`}>
       <div className="flow-chart-buttons-container">
         <FlowChartAddButton tiddlerTitle={props.node.id} newTiddlerTemplate={props.newTiddlerTemplate} focusedStateSetter={props.focusedStateSetter} />
         <FlowChartEditButton tiddlerTitle={props.node.id} focusedStateSetter={props.focusedStateSetter} />
