@@ -6,6 +6,7 @@ import type { IFocusedState } from '../types';
 interface IProps {
   tiddlerTitle: string;
   newTiddlerTemplate?: string;
+  newTiddlerTags?: string;
   focusedStateSetter: (newState: IFocusedState) => void;
 }
 export function FlowChartAddButton(props: IProps) {
@@ -18,10 +19,11 @@ export function FlowChartAddButton(props: IProps) {
         templateTiddler = $tw.wiki.getTiddler(props.newTiddlerTemplate);
       }
       const newTiddlerTitle = `${props.tiddlerTitle} 1`;
+      const tagsFromTemplate = props.newTiddlerTags ? $tw.utils.parseStringArray(props.newTiddlerTags) ?? [] : [];
       $tw.wiki.addTiddler({
         title: newTiddlerTitle,
         ...templateTiddler?.fields,
-        tags: [...(templateTiddler?.fields?.tags ?? []), props.tiddlerTitle],
+        tags: [...(templateTiddler?.fields?.tags ?? []), ...tagsFromTemplate, props.tiddlerTitle],
       });
       setTimeout(() => {
         props.focusedStateSetter({ id: newTiddlerTitle, state: 'edit' });

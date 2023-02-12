@@ -21,6 +21,10 @@ export interface IAppProps extends Partial<ITiddlerGraphResult>, IDefaultWidgetP
    */
   newTiddlerTemplate?: string;
   /**
+   * The title of a template tiddler, that will be used to create a new tiddler, this overwrites newTiddlerTemplate. Also work if not providing newTiddlerTemplate
+   */
+  newTiddlerTags?: string;
+  /**
    * Field to get relationship between nodes, default to `tags` field
    */
   field?: string;
@@ -104,7 +108,16 @@ export function App(props: IAppProps): JSX.Element {
         }
         return (
           <Node {...nodeProps} {...sharedNodeOptions}>
-            {(nodeCallbackProps) => <NodeViewMode {...nodeCallbackProps} width={width} focusedState={focusedState} focusedStateSetter={focusedStateSetter} />}
+            {(nodeCallbackProps) => (
+              <NodeViewMode
+                {...nodeCallbackProps}
+                width={width}
+                focusedState={focusedState}
+                focusedStateSetter={focusedStateSetter}
+                newTiddlerTags={props.newTiddlerTags}
+                newTiddlerTemplate={props.newTiddlerTemplate}
+              />
+            )}
           </Node>
         );
       }}

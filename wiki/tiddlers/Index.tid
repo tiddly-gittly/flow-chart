@@ -4,10 +4,10 @@ type: text/vnd.tiddlywiki
 {{Simpsons family tree}}
 
 ```
-<$flowchart tiddler="Mona" height="1000px" />
+<$flowchart tiddler="Mona" height="1000px" $template-tags="Task Project" />
 ```
 
-<$flowchart tiddler="Mona" height="1000px" />
+<$flowchart tiddler="Mona" height="1000px" $template-tags="Task Project" />
 
 Show tree of tiddlers in tag-tree. In above example, `tiddler="Mona"` means show tiddlers with `Mona` in tags, and tiddlers with those tiddlers as tag.
 

@@ -8,6 +8,7 @@ const topExtraAreaHeight = 20;
 
 interface IOwnProps {
   newTiddlerTemplate?: string;
+  newTiddlerTags?: string;
   focusedStateSetter: (newState: IFocusedState) => void;
   focusedState: IFocusedState;
 }
@@ -22,7 +23,12 @@ export function NodeViewMode(props: NodeChildProps & IOwnProps) {
       y={-topExtraAreaHeight / 2}
       className={`flow-chart-mouse-event-node ${focused ? 'flow-chart-focused-node' : 'flow-chart-node-view-mode'}`}>
       <div className="flow-chart-buttons-container">
-        <FlowChartAddButton tiddlerTitle={props.node.id} newTiddlerTemplate={props.newTiddlerTemplate} focusedStateSetter={props.focusedStateSetter} />
+        <FlowChartAddButton
+          tiddlerTitle={props.node.id}
+          newTiddlerTemplate={props.newTiddlerTemplate}
+          newTiddlerTags={props.newTiddlerTags}
+          focusedStateSetter={props.focusedStateSetter}
+        />
         <FlowChartEditButton tiddlerTitle={props.node.id} focusedStateSetter={props.focusedStateSetter} />
       </div>
     </foreignObject>

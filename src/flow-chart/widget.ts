@@ -19,6 +19,7 @@ class FlowChartWidget extends Widget<IAppProps> {
     return {
       rootTiddler: this.rootTiddler,
       newTiddlerTemplate: this.getAttribute('$template'),
+      newTiddlerTags: this.getAttribute('$template-tags'),
       /** can be RIGHT */
       direction: this.getAttribute('direction'),
       // a default height
