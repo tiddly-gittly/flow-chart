@@ -31,7 +31,6 @@ export function NodeEditMode(props: NodeChildProps & IOwnProps) {
       width={props.width}
       x={0}
       y={-topExtraAreaHeight / 2}
-      onClick={() => props.focusedStateSetter({ id: props.node.id, state: 'focus' })}
       className="flow-chart-edit-node flow-chart-mouse-event-node">
       <div>
         <input

@@ -1,15 +1,8 @@
-import type { PortData } from 'reaflow';
+import type { PortData, EdgeData, NodeData } from 'reaflow';
 
 export interface ITiddlerGraphResult {
-  nodes: {
-    id: string;
-    text: string;
-  }[];
-  edges: {
-    id: string;
-    from: string;
-    to: string;
-  }[];
+  nodes: NodeData[];
+  edges: EdgeData[];
 }
 export interface ITiddlerGraphOptions {
   invertArrow: boolean;
@@ -40,7 +33,7 @@ export function getChildTiddlersRecursively(
   previousResults?: ITiddlerGraphResult,
 ): ITiddlerGraphResult {
   const results = previousResults ?? {
-    edges: [],
+    edges: [] as EdgeData[],
     nodes: [{ id: title, text: title, ports: [getPort(title)] }],
   };
   // get tagging[] list at this level

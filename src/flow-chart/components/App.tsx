@@ -1,6 +1,7 @@
-import { useState } from 'react';
+import { useState, MouseEvent } from 'react';
 import { Canvas, Edge, Node, NodeData, NodeDragType, hasLink } from 'reaflow';
-import { IDefaultWidgetProps, ParentWidgetContext } from 'tw-react';
+import { IDefaultWidgetProps } from 'tw-react';
+import { navigateToTiddlerInDefaultLayout } from 'src/flow-chart/utils/navigateToTiddlerInDefaultLayout';
 
 import './App.css';
 import { ITiddlerGraphResult } from '../utils/getNodeAndRelationship';
@@ -46,78 +47,86 @@ export function App(props: IAppProps): JSX.Element {
   // const relationshipField = props.field || 'tags';
 
   return (
-    <ParentWidgetContext.Provider value={props.parentWidget}>
-      <Canvas
-        className="flow-chart-container"
-        maxWidth={props.width}
-        maxHeight={props.height}
-        nodes={nodes}
-        edges={edges}
-        selections={focusedState.id ? [focusedState.id] : []}
-        direction={props.direction}
-        fit={true}
-        onNodeLinkCheck={(_event, from: NodeData, to: NodeData) => {
-          if (from.id === to.id) {
-            return false;
-          }
+    <Canvas
+      className="flow-chart-container"
+      maxWidth={props.width}
+      maxHeight={props.height}
+      nodes={nodes}
+      edges={edges}
+      selections={focusedState.id ? [focusedState.id] : []}
+      direction={props.direction}
+      fit={true}
+      onNodeLinkCheck={(_event, from: NodeData, to: NodeData) => {
+        if (from.id === to.id) {
+          return false;
+        }
 
-          if (hasLink(edges, from, to)) {
-            return false;
-          }
+        if (hasLink(edges, from, to)) {
+          return false;
+        }
 
-          return true;
-        }}
-        onNodeLink={(event, from, to) => {
-          const tiddlerToChange = $tw.wiki.getTiddler(from.id);
-          if (!tiddlerToChange) {
-            return;
-          }
+        return true;
+      }}
+      onNodeLink={(event, from, to) => {
+        const tiddlerToChange = $tw.wiki.getTiddler(from.id);
+        if (!tiddlerToChange) {
+          return;
+        }
 
-          if (event.dragType === 'port') {
-            $tw.wiki.addTiddler({ ...tiddlerToChange.fields, tags: [...tiddlerToChange.fields.tags, to.id] });
-          }
-        }}
-        node={(props) => {
-          const width = Math.max(props.width, minNodeWidth);
-          const sharedNodeOptions = {
-            style: { width },
-            dragType: 'port' as NodeDragType,
-            dragCursor: 'grab',
-            removable: false,
-          };
-          if (focusedState.id === props.id && focusedState.state === 'edit') {
-            return (
-              <Node {...props} {...sharedNodeOptions}>
-                {(nodeProps) => <NodeEditMode {...nodeProps} width={width} focusedStateSetter={focusedStateSetter} />}
-              </Node>
-            );
-          }
+        if (event.dragType === 'port') {
+          $tw.wiki.addTiddler({ ...tiddlerToChange.fields, tags: [...tiddlerToChange.fields.tags, to.id] });
+        }
+      }}
+      node={(nodeProps) => {
+        const width = Math.max(nodeProps.width, minNodeWidth);
+        const sharedNodeOptions = {
+          style: { width },
+          dragType: 'port' as NodeDragType,
+          dragCursor: 'grab',
+          removable: false,
+          onClick: (event: MouseEvent) => {
+            event.preventDefault();
+            event.stopPropagation();
+            if (focusedState.id === nodeProps.id) {
+              // if already focused, jump to tiddler like being double clicked
+              navigateToTiddlerInDefaultLayout(nodeProps.id, props.parentWidget);
+            } else {
+              focusedStateSetter({ id: nodeProps.id, state: 'focus' });
+            }
+          },
+        };
+        if (focusedState.id === nodeProps.id && focusedState.state === 'edit') {
           return (
-            <Node {...props} {...sharedNodeOptions}>
-              {(nodeProps) => <NodeViewMode {...nodeProps} width={width} focusedState={focusedState} focusedStateSetter={focusedStateSetter} />}
+            <Node {...nodeProps} {...sharedNodeOptions}>
+              {(nodeCallbackProps) => <NodeEditMode {...nodeCallbackProps} width={width} focusedStateSetter={focusedStateSetter} />}
             </Node>
           );
-        }}
-        edge={
-          <Edge
-            onClick={(event, edge) => {
-              focusedStateSetter({ id: edge.id, state: 'focus' });
-            }}
-            onRemove={(event, edge) => {
-              if (edge.from === undefined) return;
-              const tiddlerToChange = $tw.wiki.getTiddler(edge.from);
-              if (tiddlerToChange === undefined) return;
-
-              const tagsWithoutEdgeTo = tiddlerToChange.fields.tags.filter((tag) => tag !== edge.to);
-
-              $tw.wiki.addTiddler({ ...tiddlerToChange.fields, tags: tagsWithoutEdgeTo });
-            }}
-          />
         }
-        onCanvasClick={(_event) => {
-          focusedStateSetter({ id: undefined, state: undefined });
-        }}
-      />
-    </ParentWidgetContext.Provider>
+        return (
+          <Node {...nodeProps} {...sharedNodeOptions}>
+            {(nodeCallbackProps) => <NodeViewMode {...nodeCallbackProps} width={width} focusedState={focusedState} focusedStateSetter={focusedStateSetter} />}
+          </Node>
+        );
+      }}
+      edge={
+        <Edge
+          onClick={(event, edge) => {
+            focusedStateSetter({ id: edge.id, state: 'focus' });
+          }}
+          onRemove={(event, edge) => {
+            if (edge.from === undefined) return;
+            const tiddlerToChange = $tw.wiki.getTiddler(edge.from);
+            if (tiddlerToChange === undefined) return;
+
+            const tagsWithoutEdgeTo = tiddlerToChange.fields.tags.filter((tag) => tag !== edge.to);
+
+            $tw.wiki.addTiddler({ ...tiddlerToChange.fields, tags: tagsWithoutEdgeTo });
+          }}
+        />
+      }
+      onCanvasClick={(_event) => {
+        focusedStateSetter({ id: undefined, state: undefined });
+      }}
+    />
   );
 }
