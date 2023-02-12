@@ -24,7 +24,11 @@ export function NodeViewMode(props: NodeChildProps & IOwnProps) {
       width={props.width}
       x={0}
       y={-topExtraAreaHeight / 2}
-      onClick={() => props.focusedStateSetter({ id: props.node.id, state: 'focus' })}
+      onClick={(event) => {
+        event.preventDefault();
+        event.stopPropagation();
+        props.focusedStateSetter({ id: props.node.id, state: 'focus' });
+      }}
       onDoubleClick={(event) => {
         event.preventDefault();
         event.stopPropagation();

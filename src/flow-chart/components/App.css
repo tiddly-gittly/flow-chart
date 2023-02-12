@@ -5,7 +5,7 @@
 .flow-chart-mouse-event-node {
   user-select: none;
   /* https://github.com/reaviz/reaflow/issues/50#issuecomment-776164845 */
-  pointer-events: none;
+  /* pointer-events: none; */
 }
 
 .flow-chart-node-view-mode {
@@ -31,9 +31,10 @@
 .flow-chart-buttons-container:hover button.flow-chart-button {
   opacity: 1;
 }
-.flow-chart-focused-node {
-  border: 2px dotted #999;
+.flow-chart-focused-node button.flow-chart-button {
+  opacity: 1;
 }
+
 .flow-chart-edit-node > div {
   display: flex;
   flex-direction: column;

@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Canvas, Node, NodeData, NodeDragType, createEdgeFromNodes, hasLink } from 'reaflow';
+import { Canvas, Edge, Node, NodeData, NodeDragType, hasLink } from 'reaflow';
 import { IDefaultWidgetProps, ParentWidgetContext } from 'tw-react';
 
 import './App.css';
@@ -37,13 +37,14 @@ const minNodeWidth = 27 * 2 + 16;
 
 export function App(props: IAppProps): JSX.Element {
   const { nodes, edges } = props;
+  const [focusedState, focusedStateSetter] = useState<IFocusedState>({ id: undefined, state: undefined });
+
   if (!nodes || !edges) {
     return <div>Loading...</div>;
   }
   // TODO: only support tags, until we have time to add config and use kin-filter later
   // const relationshipField = props.field || 'tags';
 
-  const [focusedState, focusedStateSetter] = useState<IFocusedState>({ id: undefined, state: undefined });
   return (
     <ParentWidgetContext.Provider value={props.parentWidget}>
       <Canvas
@@ -52,6 +53,7 @@ export function App(props: IAppProps): JSX.Element {
         maxHeight={props.height}
         nodes={nodes}
         edges={edges}
+        selections={focusedState.id ? [focusedState.id] : []}
         direction={props.direction}
         fit={true}
         onNodeLinkCheck={(_event, from: NodeData, to: NodeData) => {
@@ -81,6 +83,7 @@ export function App(props: IAppProps): JSX.Element {
             style: { width },
             dragType: 'port' as NodeDragType,
             dragCursor: 'grab',
+            removable: false,
           };
           if (focusedState.id === props.id && focusedState.state === 'edit') {
             return (
@@ -94,6 +97,25 @@ export function App(props: IAppProps): JSX.Element {
               {(nodeProps) => <NodeViewMode {...nodeProps} width={width} focusedState={focusedState} focusedStateSetter={focusedStateSetter} />}
             </Node>
           );
+        }}
+        edge={
+          <Edge
+            onClick={(event, edge) => {
+              focusedStateSetter({ id: edge.id, state: 'focus' });
+            }}
+            onRemove={(event, edge) => {
+              if (edge.from === undefined) return;
+              const tiddlerToChange = $tw.wiki.getTiddler(edge.from);
+              if (tiddlerToChange === undefined) return;
+
+              const tagsWithoutEdgeTo = tiddlerToChange.fields.tags.filter((tag) => tag !== edge.to);
+
+              $tw.wiki.addTiddler({ ...tiddlerToChange.fields, tags: tagsWithoutEdgeTo });
+            }}
+          />
+        }
+        onCanvasClick={(_event) => {
+          focusedStateSetter({ id: undefined, state: undefined });
         }}
       />
     </ParentWidgetContext.Provider>
