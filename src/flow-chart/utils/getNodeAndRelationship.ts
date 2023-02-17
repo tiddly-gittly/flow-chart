@@ -38,7 +38,24 @@ export function getChildTiddlersRecursively(
   };
   // get tagging[] list at this level
   const intermediate = $tw.wiki.getTiddlersWithTag(title);
+  // add edges first. We are going to modify intermediate list later
+  results.edges.push(
+    ...intermediate.map((childTitle) =>
+      options?.invertArrow
+        ? {
+            id: `${title}-${childTitle}`,
+            to: childTitle,
+            from: title,
+          }
+        : {
+            id: `${title}-${childTitle}`,
+            from: childTitle,
+            to: title,
+          },
+    ),
+  );
   // remove any that are already in the results array to avoid loops
+  // and make node list without duplication
   // code adapted from $tw.utils.pushTop
   if (intermediate.length === 0) {
     // no result at this level (at leaf), just return
@@ -67,21 +84,6 @@ export function getChildTiddlersRecursively(
   // now we have intermediate array without duplication
   // add the remaining intermediate results and traverse the hierarchy further
   results.nodes.push(...intermediate.map((childTitle) => ({ id: childTitle, text: childTitle, ports: [getPort(childTitle)] })));
-  results.edges.push(
-    ...intermediate.map((childTitle) =>
-      options?.invertArrow
-        ? {
-            id: `${title}-${childTitle}`,
-            to: childTitle,
-            from: title,
-          }
-        : {
-            id: `${title}-${childTitle}`,
-            from: childTitle,
-            to: title,
-          },
-    ),
-  );
 
   intermediate.forEach(function (title) {
     getChildTiddlersRecursively(title, options, results);
