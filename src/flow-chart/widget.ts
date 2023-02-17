@@ -1,8 +1,9 @@
 import { IChangedTiddlers } from 'tiddlywiki';
 import type { ReactWidget } from 'tw-react';
+import type { NodeData } from 'reaflow';
 
 import { App, IAppProps } from './components/App';
-import { ITiddlerGraphResult, getChildTiddlersRecursively } from './utils/getNodeAndRelationship';
+import { ITiddlerGraphResult, getChildTiddlersRecursively, getPort } from './utils/getNodeAndRelationship';
 // import { widget as ReactWidget } from '$:/plugins/linonetwo/tw-react/widget.js';
 
 const Widget = require('$:/plugins/linonetwo/tw-react/widget.js').widget as typeof ReactWidget;
@@ -36,8 +37,16 @@ class FlowChartWidget extends Widget<IAppProps> {
   private calculateGraph() {
     if (this.rootTiddler === undefined) return;
     const { nodes, edges } = getChildTiddlersRecursively(this.rootTiddler, { invertArrow: this.invertArrow });
-    this.nodes = nodes;
+    this.nodes = [...nodes, ...this.getExtraNodes()];
     this.edges = edges;
+  }
+
+  private getExtraNodes(): NodeData[] {
+    /** Filter to get extra nodes shown as orphan node in the graph, awaited to be connected */
+    const extraNodesFilter = this.getAttribute('extra');
+    if (!extraNodesFilter) return [];
+    const extraTiddlers = $tw.wiki.filterTiddlers(extraNodesFilter);
+    return extraTiddlers.map((title) => ({ id: title, text: title, ports: [getPort(title)] }));
   }
 
   public refresh(changedTiddlers: IChangedTiddlers): boolean {

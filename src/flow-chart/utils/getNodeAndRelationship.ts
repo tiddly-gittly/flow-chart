@@ -9,7 +9,7 @@ export interface ITiddlerGraphOptions {
 }
 
 const PORT_SUFFIX = '-port';
-function getPort(tiddlerTitle: string): PortData {
+export function getPort(tiddlerTitle: string): PortData {
   return {
     id: `${tiddlerTitle}${PORT_SUFFIX}`,
     width: 10,
