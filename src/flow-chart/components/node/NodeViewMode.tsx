@@ -22,15 +22,17 @@ export function NodeViewMode(props: NodeChildProps & IOwnProps) {
       x={0}
       y={-topExtraAreaHeight / 2}
       className={`flow-chart-mouse-event-node ${focused ? 'flow-chart-focused-node' : 'flow-chart-node-view-mode'}`}>
-      <div className="flow-chart-buttons-container">
-        <FlowChartAddButton
-          tiddlerTitle={props.node.id}
-          newTiddlerTemplate={props.newTiddlerTemplate}
-          newTiddlerTags={props.newTiddlerTags}
-          focusedStateSetter={props.focusedStateSetter}
-        />
-        <FlowChartEditButton tiddlerTitle={props.node.id} focusedStateSetter={props.focusedStateSetter} />
-      </div>
+      {focused && (
+        <div className="flow-chart-buttons-container">
+          <FlowChartAddButton
+            tiddlerTitle={props.node.id}
+            newTiddlerTemplate={props.newTiddlerTemplate}
+            newTiddlerTags={props.newTiddlerTags}
+            focusedStateSetter={props.focusedStateSetter}
+          />
+          <FlowChartEditButton tiddlerTitle={props.node.id} focusedStateSetter={props.focusedStateSetter} />
+        </div>
+      )}
     </foreignObject>
   );
 }
