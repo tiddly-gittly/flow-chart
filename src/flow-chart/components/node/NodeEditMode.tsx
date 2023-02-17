@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { NodeChildProps } from 'reaflow';
 import { IFocusedState } from '../types';
 
@@ -39,6 +39,7 @@ export function NodeEditMode(props: NodeChildProps & IOwnProps) {
     }
     errorMessageSetter('');
   }, [props.node.id, editingID]);
+  const onComposition = useRef(false);
   return (
     <foreignObject
       height={props.height + topExtraAreaHeight}
@@ -59,8 +60,10 @@ export function NodeEditMode(props: NodeChildProps & IOwnProps) {
           onChange={(event) => {
             editingIDSetter(event.target.value);
           }}
+          onCompositionEnd={() => (onComposition.current = false)}
+          onCompositionStart={() => (onComposition.current = true)}
           onKeyDown={(event) => {
-            if (event.code === 'Enter') {
+            if (event.code === 'Enter' && !onComposition.current) {
               onDone();
             }
           }}
