@@ -52,3 +52,7 @@
 
   pointer-events: all;
 }
+.flow-chart-edit-error-message {
+  background-color: white;
+  font-size: 0.5em;
+}

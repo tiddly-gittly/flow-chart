@@ -12,6 +12,7 @@ interface IOwnProps {
 export function NodeEditMode(props: NodeChildProps & IOwnProps) {
   /** set id locally to debounce the update for performance reason */
   const [editingID, editingIDSetter] = useState(props.node.id);
+  const [errorMessage, errorMessageSetter] = useState('');
   useEffect(() => {
     // update to latest name, if changed in wiki
     editingIDSetter(props.node.id);
@@ -27,6 +28,16 @@ export function NodeEditMode(props: NodeChildProps & IOwnProps) {
     } else {
       throw new Error(`"${props.node.id}" Not exist and can't be renamed to "${editingID}"`);
     }
+  }, [props.node.id, editingID]);
+  useEffect(() => {
+    if (editingID === props.node.id) return;
+    const existedTiddlerWithSameName = $tw.wiki.getTiddler(editingID);
+    if (existedTiddlerWithSameName) {
+      const existedText = $tw.wiki.getTiddlerText('$:/language/EditTemplate/Title/Exists/Prompt');
+      errorMessageSetter(existedText ?? 'Existed');
+      return;
+    }
+    errorMessageSetter('');
   }, [props.node.id, editingID]);
   return (
     <foreignObject
@@ -55,9 +66,12 @@ export function NodeEditMode(props: NodeChildProps & IOwnProps) {
           }}
           className="flow-chart-edit-input"
         />
-        <button onClick={onDone} className="flow-chart-button flow-chart-edit-done-button">
-          ✓
-        </button>
+        {!errorMessage && (
+          <button onClick={onDone} className="flow-chart-button flow-chart-edit-done-button">
+            ✓
+          </button>
+        )}
+        {errorMessage && <span className="flow-chart-edit-error-message">{errorMessage}</span>}
       </div>
     </foreignObject>
   );
