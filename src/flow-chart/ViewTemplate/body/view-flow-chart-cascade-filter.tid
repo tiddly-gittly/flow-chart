@@ -1,0 +1,5 @@
+title: $:/plugins/linonetwo/flow-chart/ViewTemplate/body/view-flow-chart-cascade-filter
+tags: $:/tags/ViewTemplateBodyFilter
+list-before: $:/config/ViewTemplateBodyFilters/system
+
+[field:type[application/flow-chart]then[$:/plugins/linonetwo/flow-chart/ViewTemplate/body/view-flow-chart]]

@@ -1,15 +1,14 @@
 import { IChangedTiddlers } from 'tiddlywiki';
-import type { ReactWidget } from 'tw-react';
 import type { NodeData } from 'reaflow';
 
-import { App, IAppProps } from './components/App';
+import type { IAppProps } from './App/MultiTiddlerChartApp/MultiTiddlerChartApp';
 import { ITiddlerGraphResult, getChildTiddlersRecursively, getPort } from './utils/getNodeAndRelationship';
 // import { widget as ReactWidget } from '$:/plugins/linonetwo/tw-react/widget.js';
+import * as App from '$:/plugins/linonetwo/flow-chart/App/MultiTiddlerChartApp/MultiTiddlerChartApp.js';
+import * as Widget from '$:/plugins/linonetwo/tw-react/widget.js';
 
-const Widget = require('$:/plugins/linonetwo/tw-react/widget.js').widget as typeof ReactWidget;
-
-class FlowChartWidget extends Widget<IAppProps> {
-  public reactComponent = App;
+class FlowChartWidget extends Widget.widget<IAppProps> {
+  public reactComponent = App.App;
 
   private rootTiddler?: string;
   private invertArrow?: boolean;

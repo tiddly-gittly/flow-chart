@@ -1,13 +1,17 @@
 import { useState, MouseEvent } from 'react';
-import { Canvas, Edge, Node, NodeData, NodeDragType, hasLink } from 'reaflow';
 import { IDefaultWidgetProps } from 'tw-react';
-import { navigateToTiddlerInDefaultLayout } from 'src/flow-chart/utils/navigateToTiddlerInDefaultLayout';
+import type { NodeData, NodeDragType } from 'reaflow';
 
-import './App.css';
-import { ITiddlerGraphResult } from '../utils/getNodeAndRelationship';
-import { IFocusedState } from './types';
-import { NodeViewMode } from './node/NodeViewMode';
-import { NodeEditMode } from './node/NodeEditMode';
+import { navigateToTiddlerInDefaultLayout } from 'src/flow-chart/utils/navigateToTiddlerInDefaultLayout';
+import { NodeEditMode } from 'src/flow-chart/components/node/NodeEditMode';
+import { NodeViewMode } from 'src/flow-chart/components/node/NodeViewMode';
+import { IFocusedState } from 'src/flow-chart/components/types';
+import { ITiddlerGraphResult } from 'src/flow-chart/utils/getNodeAndRelationship';
+import * as ReaFlowLibrary from '$:/plugins/linonetwo/flow-chart/components/ReaFlowLibrary';
+
+import './MultiTiddlerChartApp.css';
+
+const { Canvas, Edge, Node, hasLink } = ReaFlowLibrary;
 
 export interface IAppProps extends Partial<ITiddlerGraphResult>, IDefaultWidgetProps {
   /**
@@ -143,3 +147,5 @@ export function App(props: IAppProps): JSX.Element {
     />
   );
 }
+
+exports.App = App;
