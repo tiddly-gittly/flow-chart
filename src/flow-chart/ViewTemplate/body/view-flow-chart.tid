@@ -1,5 +1,0 @@
-title: $:/plugins/linonetwo/tw-whiteboard/ViewTemplate/body/view-flow-chart
-
-\define lingo-base() $:/language/ViewTemplate/Body/
-
-<$whiteboard tiddler=<<currentTiddler>> readonly="yes" height="500px" />
