@@ -35,7 +35,8 @@ class FlowChartWidget extends Widget.widget<IAppProps> {
 
   private calculateGraph() {
     if (this.rootTiddler === undefined) return;
-    const { nodes, edges } = getChildTiddlersRecursively(this.rootTiddler, { invertArrow: this.invertArrow });
+    const subfilter = this.getAttribute('subfilter');
+    const { nodes, edges } = getChildTiddlersRecursively(this.rootTiddler, { invertArrow: this.invertArrow, subfilter, widget: this });
     let extraNodes = this.getExtraNodes();
     if (extraNodes.length > 0) {
       const existedNodeId = nodes.map((node) => node.id);

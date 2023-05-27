@@ -12,3 +12,11 @@ type: text/vnd.tiddlywiki
 Show tree of tiddlers in tag-tree. In above example, `tiddler="Mona"` means show tiddlers with `Mona` in tags, and tiddlers with those tiddlers as tag.
 
 And you can drag on port to add new tag on the tiddler, or add new tiddler with a tiddler as tag.
+
+!! SubFilter
+
+You can filter out unwanted tiddlers by using `subFilter` field.
+
+In this example, we filter out [[Maggie]] who has field `child: yes`:
+
+<$flowchart tiddler="Mona" height="1000px" $template-tags="Task Project" extra="[[LinOnetwo]]" subfilter="[!field:child[yes]]" />

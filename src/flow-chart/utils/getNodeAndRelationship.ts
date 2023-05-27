@@ -1,4 +1,5 @@
 import type { PortData, EdgeData, NodeData } from 'reaflow';
+import type { Widget } from 'tiddlywiki';
 
 export interface ITiddlerGraphResult {
   nodes: NodeData[];
@@ -6,6 +7,8 @@ export interface ITiddlerGraphResult {
 }
 export interface ITiddlerGraphOptions {
   invertArrow: boolean;
+  subfilter?: string;
+  widget: Widget;
 }
 
 const PORT_SUFFIX = '-port';
@@ -37,7 +40,11 @@ export function getChildTiddlersRecursively(
     nodes: [{ id: title, text: title, ports: [getPort(title)] }],
   };
   // get tagging[] list at this level
-  const intermediate = $tw.wiki.getTiddlersWithTag(title);
+  let intermediate = $tw.wiki.getTiddlersWithTag(title);
+  if (options?.subfilter) {
+    // filter out unwanted titles
+    intermediate = $tw.wiki.filterTiddlers(options.subfilter, options.widget, $tw.wiki.makeTiddlerIterator(intermediate));
+  }
   // add edges first. We are going to modify intermediate list later
   results.edges.push(
     ...intermediate.map((childTitle) =>
