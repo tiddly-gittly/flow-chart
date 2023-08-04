@@ -1,44 +1,44 @@
-import { useState, MouseEvent } from 'react';
-import { IDefaultWidgetProps } from 'tw-react';
+import { MouseEvent, useState } from 'react';
 import type { NodeData, NodeDragType } from 'reaflow';
+import { IDefaultWidgetProps } from 'tw-react';
 
-import { navigateToTiddlerInDefaultLayout } from 'src/flow-chart/utils/navigateToTiddlerInDefaultLayout';
+import * as ReaFlowLibrary from '$:/plugins/linonetwo/flow-chart/components/ReaFlowLibrary';
 import { NodeEditMode } from 'src/flow-chart/components/node/NodeEditMode';
 import { NodeViewMode } from 'src/flow-chart/components/node/NodeViewMode';
 import { IFocusedState } from 'src/flow-chart/components/types';
 import { ITiddlerGraphResult } from 'src/flow-chart/utils/getNodeAndRelationship';
-import * as ReaFlowLibrary from '$:/plugins/linonetwo/flow-chart/components/ReaFlowLibrary';
+import { navigateToTiddlerInDefaultLayout } from 'src/flow-chart/utils/navigateToTiddlerInDefaultLayout';
 
 import './style.css';
 
 const { Canvas, Edge, Node, hasLink } = ReaFlowLibrary;
 
 export interface IAppProps extends Partial<ITiddlerGraphResult>, IDefaultWidgetProps {
-  /**
-   * root of a flow chart
-   * the whole wiki is a graph of nodes, you can select multiple node in the graph as rootTiddler, to view a sub graph of the wiki.
-   */
-  rootTiddler: string;
   direction?: 'RIGHT';
-  /**
-   * The title of a template tiddler, that will be used to create a new tiddler
-   */
-  newTiddlerTemplate?: string;
-  /**
-   * The title of a template tiddler, that will be used to create a new tiddler, this overwrites newTiddlerTemplate. Also work if not providing newTiddlerTemplate
-   */
-  newTiddlerTags?: string;
   /**
    * Field to get relationship between nodes, default to `tags` field
    */
   field?: string;
   height?: number;
-  width?: number;
   /**
    * By default, the arrow is childTiddler-[tagWith]->TagTiddler
    * But you can invert the arrow by passing "yes" to this
    */
   invertArrow: boolean;
+  /**
+   * The title of a template tiddler, that will be used to create a new tiddler, this overwrites newTiddlerTemplate. Also work if not providing newTiddlerTemplate
+   */
+  newTiddlerTags?: string;
+  /**
+   * The title of a template tiddler, that will be used to create a new tiddler
+   */
+  newTiddlerTemplate?: string;
+  /**
+   * root of a flow chart
+   * the whole wiki is a graph of nodes, you can select multiple node in the graph as rootTiddler, to view a sub graph of the wiki.
+   */
+  rootTiddler: string;
+  width?: number;
 }
 
 /** need to add two button with width 27px */
@@ -48,7 +48,7 @@ export function App(props: IAppProps): JSX.Element {
   const { nodes, edges } = props;
   const [focusedState, focusedStateSetter] = useState<IFocusedState>({ id: undefined, state: undefined });
 
-  if (!nodes || !edges) {
+  if ((nodes == undefined) || (edges == undefined)) {
     return <div>Loading...</div>;
   }
   // TODO: only support tags, until we have time to add config and use kin-filter later
@@ -56,7 +56,7 @@ export function App(props: IAppProps): JSX.Element {
 
   return (
     <Canvas
-      className="flow-chart-container"
+      className='flow-chart-container'
       maxWidth={props.width}
       maxHeight={props.height}
       nodes={nodes}
@@ -77,7 +77,7 @@ export function App(props: IAppProps): JSX.Element {
       }}
       onNodeLink={(event, from, to) => {
         const tiddlerToChange = $tw.wiki.getTiddler(from.id);
-        if (!tiddlerToChange) {
+        if (tiddlerToChange == undefined) {
           return;
         }
 

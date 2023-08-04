@@ -1,7 +1,6 @@
 declare module '$:/plugins/linonetwo/tw-react/widget.js' {
-  import type { IReactWidget } from 'tw-react';
-
-  export const widget: IReactWidget;
+  import type { ReactWidget } from 'tw-react';
+  export const widget: typeof ReactWidget;
 }
 
 declare module '$:/plugins/linonetwo/flow-chart/App/MultiTiddlerChartApp/MultiTiddlerChartApp.js' {

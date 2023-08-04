@@ -1,13 +1,12 @@
-import { IChangedTiddlers } from 'tiddlywiki';
 import type { NodeData } from 'reaflow';
+import { IChangedTiddlers } from 'tiddlywiki';
 
-import type { IAppProps } from 'src/flow-chart/App/MultiTiddlerChartApp/MultiTiddlerChartApp';
-import { ITiddlerGraphResult, getChildTiddlersRecursively, getPort } from 'src/flow-chart/utils/getNodeAndRelationship';
-// import { widget as ReactWidget } from '$:/plugins/linonetwo/tw-react/widget.js';
 import * as App from '$:/plugins/linonetwo/flow-chart/App/MultiTiddlerChartApp/MultiTiddlerChartApp.js';
-import * as Widget from '$:/plugins/linonetwo/tw-react/widget.js';
+import { widget as Widget } from '$:/plugins/linonetwo/tw-react/widget.js';
+import type { IAppProps } from 'src/flow-chart/App/MultiTiddlerChartApp/MultiTiddlerChartApp';
+import { getChildTiddlersRecursively, getPort, ITiddlerGraphResult } from 'src/flow-chart/utils/getNodeAndRelationship';
 
-class FlowChartWidget extends Widget.widget<IAppProps> {
+class FlowChartWidget extends Widget<IAppProps> {
   public reactComponent = App.App;
 
   private rootTiddler?: string;
@@ -39,8 +38,8 @@ class FlowChartWidget extends Widget.widget<IAppProps> {
     const { nodes, edges } = getChildTiddlersRecursively(this.rootTiddler, { invertArrow: this.invertArrow, subfilter, widget: this });
     let extraNodes = this.getExtraNodes();
     if (extraNodes.length > 0) {
-      const existedNodeId = nodes.map((node) => node.id);
-      extraNodes = extraNodes.filter((node) => !existedNodeId.includes(node.id));
+      const existedNodeId = new Set(nodes.map((node) => node.id));
+      extraNodes = extraNodes.filter((node) => !existedNodeId.has(node.id));
     }
     this.nodes = [...nodes, ...extraNodes];
     this.edges = edges;
@@ -70,7 +69,7 @@ class FlowChartWidget extends Widget.widget<IAppProps> {
     /** don't use `this.getVariable('currentTiddler')` otherwise it will overwrite the widget. */
     this.rootTiddler = this.getAttribute('tiddler');
     this.invertArrow = this.getAttribute('invert') === 'yes';
-    if (!this.nodes && !this.edges) {
+    if ((this.nodes == undefined) && (this.edges == undefined)) {
       this.calculateGraph();
     }
     // Make the child widgets

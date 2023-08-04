@@ -1,10 +1,11 @@
+const tsEslintConfig = require('./tsconfig.eslint.json');
+
 module.exports = {
   root: true,
-  extends: ['@modern-js/eslint-config'],
-  rules: {
-    '@typescript-eslint/prefer-for-of': 'off',
-    curly: 'off',
-    '@typescript-eslint/typedef': 'off',
-    '@typescript-eslint/lines-between-class-members': 'off',
+  ignorePatterns: tsEslintConfig.exclude,
+  parserOptions: {
+    project: './tsconfig.eslint.json',
+    tsconfigRootDir: __dirname,
   },
+  extends: ['eslint-config-tidgi'],
 };
