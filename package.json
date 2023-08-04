@@ -44,7 +44,7 @@
     "typescript": "^5.1.6"
   },
   "dependencies": {
-    "reaflow": "^5.2.2",
+    "reaflow": "5.1.2",
     "requestidlecallback-polyfill": "^1.0.2",
     "tiddlywiki": "^5.3.0",
     "tiddlywiki-plugin-dev": "^0.0.39",
