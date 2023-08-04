@@ -37,7 +37,7 @@ export interface IAppProps extends Partial<ITiddlerGraphResult>, IDefaultWidgetP
    * root of a flow chart
    * the whole wiki is a graph of nodes, you can select multiple node in the graph as rootTiddler, to view a sub graph of the wiki.
    */
-  rootTiddler: string;
+  rootTiddler?: string;
   width?: number;
 }
 
@@ -45,10 +45,10 @@ export interface IAppProps extends Partial<ITiddlerGraphResult>, IDefaultWidgetP
 const minNodeWidth = 27 * 2 + 16;
 
 export function App(props: IAppProps): JSX.Element {
-  const { nodes, edges } = props;
+  const { nodes, edges, width, height, direction, parentWidget, newTiddlerTags, newTiddlerTemplate } = props;
   const [focusedState, focusedStateSetter] = useState<IFocusedState>({ id: undefined, state: undefined });
 
-  if ((nodes == undefined) || (edges == undefined)) {
+  if ((nodes === undefined) || (edges === undefined)) {
     return <div>Loading...</div>;
   }
   // TODO: only support tags, until we have time to add config and use kin-filter later
@@ -57,12 +57,12 @@ export function App(props: IAppProps): JSX.Element {
   return (
     <Canvas
       className='flow-chart-container'
-      maxWidth={props.width}
-      maxHeight={props.height}
+      maxWidth={width}
+      maxHeight={height}
       nodes={nodes}
       edges={edges}
-      selections={focusedState.id ? [focusedState.id] : []}
-      direction={props.direction}
+      selections={(focusedState.id !== undefined && focusedState.id.length > 0) ? [focusedState.id] : []}
+      direction={direction}
       fit={true}
       onNodeLinkCheck={(_event, from: NodeData, to: NodeData) => {
         if (from.id === to.id) {
@@ -75,9 +75,9 @@ export function App(props: IAppProps): JSX.Element {
 
         return true;
       }}
-      onNodeLink={(event, from, to) => {
+      onNodeLink={(event: { dragType: NodeDragType }, from, to) => {
         const tiddlerToChange = $tw.wiki.getTiddler(from.id);
-        if (tiddlerToChange == undefined) {
+        if (tiddlerToChange === undefined) {
           return;
         }
 
@@ -97,7 +97,7 @@ export function App(props: IAppProps): JSX.Element {
             event.stopPropagation();
             if (focusedState.id === nodeProps.id) {
               // if already focused, jump to tiddler like being double clicked
-              navigateToTiddlerInDefaultLayout(nodeProps.id, props.parentWidget);
+              navigateToTiddlerInDefaultLayout(nodeProps.id, parentWidget);
             } else {
               focusedStateSetter({ id: nodeProps.id, state: 'focus' });
             }
@@ -118,8 +118,8 @@ export function App(props: IAppProps): JSX.Element {
                 width={width}
                 focusedState={focusedState}
                 focusedStateSetter={focusedStateSetter}
-                newTiddlerTags={props.newTiddlerTags}
-                newTiddlerTemplate={props.newTiddlerTemplate}
+                newTiddlerTags={newTiddlerTags}
+                newTiddlerTemplate={newTiddlerTemplate}
               />
             )}
           </Node>
@@ -148,4 +148,7 @@ export function App(props: IAppProps): JSX.Element {
   );
 }
 
+declare let exports: {
+  App: typeof App;
+};
 exports.App = App;

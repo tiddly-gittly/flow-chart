@@ -14,8 +14,8 @@ dependencies:
     specifier: ^0.0.39
     version: 0.0.39(postcss@8.4.27)(ts-node@10.9.1)
   tw-react:
-    specifier: ^0.5.4
-    version: 0.5.4(react-dom@18.2.0)(react@18.2.0)
+    specifier: ^0.6.1
+    version: 0.6.1(react-dom@18.2.0)(react@18.2.0)
 
 devDependencies:
   '@modern-js/tsconfig':
@@ -4613,8 +4613,8 @@ packages:
       typescript: 5.1.6
     dev: true
 
-  /tw-react@0.5.4(react-dom@18.2.0)(react@18.2.0):
-    resolution: {integrity: sha512-Zrbo8IzfA60dp2dCmvxgJyjPVKIAMhd6lXAyk3yyTIOIJm/barEO0Z2onC7yImTF75O0miQ8R9oxeJmFkSs0qA==}
+  /tw-react@0.6.1(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-8i+77waT7IaLaxg9y8ln/kpnK67BkX82m4Iv6eF/v+XSq/rNDBeSAmFgQ2CoKw0vXq8Z4GH20CS7k2IbWEBs9w==}
     peerDependencies:
       react: ^18.2.0
       react-dom: ^18.2.0

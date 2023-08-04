@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/strict-boolean-expressions */
 import type { NodeData } from 'reaflow';
 import { IChangedTiddlers } from 'tiddlywiki';
 
@@ -20,12 +21,12 @@ class FlowChartWidget extends Widget<IAppProps> {
       newTiddlerTemplate: this.getAttribute('$template'),
       newTiddlerTags: this.getAttribute('$template-tags'),
       /** can be RIGHT */
-      direction: this.getAttribute('direction'),
+      direction: this.getAttribute('direction') as 'RIGHT' | undefined,
       // a default height
       height: this.getAttribute('height') ? Number(this.getAttribute('height')?.replace('px', '')) : 500,
       // default to full width 100%, but it requires number, so we have to get number from parent element
       width: this.getAttribute('width') ? Number(this.getAttribute('width')?.replace('px', '')) : (this.parentDomNode as HTMLElement)?.offsetWidth,
-      invertArrow: this.invertArrow,
+      invertArrow: Boolean(this.invertArrow),
       field: 'tags',
       nodes: this.nodes,
       edges: this.edges,
@@ -69,7 +70,7 @@ class FlowChartWidget extends Widget<IAppProps> {
     /** don't use `this.getVariable('currentTiddler')` otherwise it will overwrite the widget. */
     this.rootTiddler = this.getAttribute('tiddler');
     this.invertArrow = this.getAttribute('invert') === 'yes';
-    if ((this.nodes == undefined) && (this.edges == undefined)) {
+    if ((this.nodes === undefined) && (this.edges === undefined)) {
       this.calculateGraph();
     }
     // Make the child widgets
@@ -77,4 +78,7 @@ class FlowChartWidget extends Widget<IAppProps> {
   }
 }
 
+declare let exports: {
+  flowchart: typeof Widget<IAppProps>;
+};
 exports.flowchart = FlowChartWidget;

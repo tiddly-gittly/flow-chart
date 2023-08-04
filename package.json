@@ -48,6 +48,6 @@
     "requestidlecallback-polyfill": "^1.0.2",
     "tiddlywiki": "^5.3.0",
     "tiddlywiki-plugin-dev": "^0.0.39",
-    "tw-react": "^0.5.4"
+    "tw-react": "^0.6.1"
   }
 }
