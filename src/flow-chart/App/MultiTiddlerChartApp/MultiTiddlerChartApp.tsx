@@ -147,8 +147,3 @@ export function App(props: IAppProps): JSX.Element {
     />
   );
 }
-
-declare let exports: {
-  App: typeof App;
-};
-exports.App = App;

@@ -147,5 +147,3 @@ export function App(props: IAppProps): JSX.Element {
     />
   );
 }
-
-exports.App = App;
