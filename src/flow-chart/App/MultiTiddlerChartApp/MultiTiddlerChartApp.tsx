@@ -1,13 +1,13 @@
-import { MouseEvent, useState } from 'react';
+import { JSX, MouseEvent, useState } from 'react';
+import { IDefaultWidgetProps } from 'tw-react/dist/lib/widget-type';
 import type { NodeData, NodeDragType } from 'reaflow';
-import { IDefaultWidgetProps } from 'tw-react';
 
 import * as ReaFlowLibrary from '$:/plugins/linonetwo/flow-chart/components/ReaFlowLibrary';
 import { NodeEditMode } from 'src/flow-chart/components/node/NodeEditMode';
 import { NodeViewMode } from 'src/flow-chart/components/node/NodeViewMode';
 import { IFocusedState } from 'src/flow-chart/components/types';
 import { ITiddlerGraphResult } from 'src/flow-chart/utils/getNodeAndRelationship';
-import { navigateToTiddlerInDefaultLayout } from 'src/flow-chart/utils/navigateToTiddlerInDefaultLayout';
+import { navigateToTiddler } from 'src/flow-chart/utils/navigateToTiddler';
 
 import './style.css';
 
@@ -82,7 +82,7 @@ export function App(props: IAppProps): JSX.Element {
         }
 
         if (event.dragType === 'port') {
-          $tw.wiki.addTiddler({ ...tiddlerToChange.fields, tags: [...tiddlerToChange.fields.tags, to.id] });
+          $tw.wiki.addTiddler({ ...tiddlerToChange.fields, tags: [...(tiddlerToChange.fields.tags ?? []), to.id] });
         }
       }}
       node={(nodeProps) => {
@@ -97,7 +97,7 @@ export function App(props: IAppProps): JSX.Element {
             event.stopPropagation();
             if (focusedState.id === nodeProps.id) {
               // if already focused, jump to tiddler like being double clicked
-              navigateToTiddlerInDefaultLayout(nodeProps.id, parentWidget);
+              navigateToTiddler(nodeProps.id, parentWidget);
             } else {
               focusedStateSetter({ id: nodeProps.id, state: 'focus' });
             }
@@ -135,7 +135,7 @@ export function App(props: IAppProps): JSX.Element {
             const tiddlerToChange = $tw.wiki.getTiddler(edge.from);
             if (tiddlerToChange === undefined) return;
 
-            const tagsWithoutEdgeTo = tiddlerToChange.fields.tags.filter((tag) => tag !== edge.to);
+            const tagsWithoutEdgeTo = (tiddlerToChange.fields.tags ?? []).filter((tag) => tag !== edge.to);
 
             $tw.wiki.addTiddler({ ...tiddlerToChange.fields, tags: tagsWithoutEdgeTo });
           }}
