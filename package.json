@@ -4,18 +4,21 @@
   "version": "0.0.2",
   "scripts": {
     "dev": "tiddlywiki-plugin-dev dev",
+    "dev:lan": "tiddlywiki-plugin-dev dev --lan",
+    "dev:wiki": "tiddlywiki-plugin-dev dev --write-wiki",
+    "test": "tiddlywiki-plugin-dev test",
+    "build": "npm run clean && tiddlywiki-plugin-dev build",
+    "publish": "npm run clean && tiddlywiki-plugin-dev publish",
     "reset": "rimraf ./**/node_modules",
     "clean": "rimraf dist",
     "prepare": "husky install",
-    "update": "npm-check-updates -u",
+    "update": "npm-check-updates -u && dprint config update",
     "new": "tiddlywiki-plugin-dev new",
-    "build": "npm run clean && tiddlywiki-plugin-dev build",
     "build:library": "npm run clean && tiddlywiki-plugin-dev build --library --output dist/library",
-    "publish": "npm run clean && tiddlywiki-plugin-dev publish",
     "publish:offline": "npm run clean && tiddlywiki-plugin-dev publish --offline"
   },
   "engines": {
-    "node": ">=16"
+    "node": ">=20"
   },
   "husky": {
     "hooks": {
@@ -31,23 +34,24 @@
     ]
   },
   "devDependencies": {
-    "eslint-config-tidgi": "1.1.2",
-    "@modern-js/tsconfig": "^2.29.0",
-    "@types/node": "^20.4.7",
-    "@types/react": "^18.2.18",
-    "@types/react-dom": "^18.2.7",
-    "husky": "^8.0.3",
-    "lint-staged": "^13.2.3",
-    "rimraf": "^5.0.1",
-    "ts-node": "^10.9.1",
-    "tw5-typed": "^0.3.8",
-    "typescript": "^5.1.6"
+    "@modern-js/tsconfig": "^2.66.0",
+    "@types/node": "^22.13.14",
+    "@types/react": "^19.0.12",
+    "@types/react-dom": "^19.0.4",
+    "eslint-config-tidgi": "1.2.3",
+    "husky": "^9.1.7",
+    "lint-staged": "^15.5.0",
+    "npm-check-updates": "^17.1.16",
+    "rimraf": "^6.0.1",
+    "ts-node": "^10.9.2",
+    "tw5-typed": "^0.5.14",
+    "typescript": "^5.8.2"
   },
   "dependencies": {
-    "reaflow": "5.1.2",
+    "reaflow": "5.3.4",
     "requestidlecallback-polyfill": "^1.0.2",
-    "tiddlywiki": "^5.3.0",
-    "tiddlywiki-plugin-dev": "^0.0.39",
-    "tw-react": "^0.6.1"
+    "tiddlywiki": "^5.3.6",
+    "tiddlywiki-plugin-dev": "^0.3.2",
+    "tw-react": "^0.6.4"
   }
 }
