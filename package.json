@@ -53,5 +53,10 @@
     "tiddlywiki": "^5.3.8",
     "tiddlywiki-plugin-dev": "^0.4.4",
     "tw-react": "^0.6.4"
+  },
+  "pnpm": {
+    "overrides": {
+      "esbuild-plugin-browserslist": "1.0.2"
+    }
   }
 }
